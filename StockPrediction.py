@@ -10,7 +10,7 @@ from tensorflow.python.keras.layers import LSTM, Dense, Dropout
 #Downloading Dataset form yfinance
 ticker = 'APPL'
 start_date = '2012-01-01'
-end_date = datetime.now()
+end_date = '2024-01-01'
 data = yf.download(ticker, start=start_date, end=end_date)
 
 #Extracting closing prices
@@ -41,3 +41,27 @@ model.add(Dropout(0.2))
 model.add(Dense(units=1))
 
 model.compile(optimizer='adam', loss='mean_squared_error')
+
+#Training the model
+epochs = 50
+batch_size = 32
+history = model.fit(X_train, y_train, epochs=epochs, batch_size=batch_size, verbose=1)
+
+#Prepping Test Data
+
+#Fetching
+test_data = yf.download(ticker, start='2024-01-02', end=datetime.now())
+actual_closing_prices = test_data['Close'].values
+
+#Scaling and setting sequence
+total_data = pd.concat((data['Close'], test_data['Close']), axis=0)
+test_inputs = total_data[len(total_data) - len(test_data) - days_sequence_len:].values
+test_inputs = test_inputs.reshape(-1, 1)
+test_inputs = scaler.transform(test_inputs)
+
+X_test = []
+for i in range(days_sequence_len, len(test_inputs)):
+    X_test.append(test_inputs[i-days_sequence_len:i, 0])
+
+X_test = np.array(X_test)
+X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
