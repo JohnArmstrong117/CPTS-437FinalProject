@@ -30,3 +30,14 @@ for i in range(days_sequence_len, len(scaled_data)):
 
 X_train, y_train = np.array(X_train), np.array(y_train)
 X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
+
+#Building the LSTM Model
+model = Sequential()
+model.add(LSTM(units=50, return_sequences=True, input_shape=(X_train.shape[1], 1)))
+model.add(Dropout(0.2))
+model.add(LSTM(units=50, return_sequences=False))
+model.add(Dropout(0.2))
+#Setting Prediciton to one day in future
+model.add(Dense(units=1))
+
+model.compile(optimizer='adam', loss='mean_squared_error')
