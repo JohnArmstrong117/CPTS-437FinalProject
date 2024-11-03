@@ -15,3 +15,18 @@ data = yf.download(ticker, start=start_date, end=end_date)
 
 #Extracting closing prices
 closing_prices = data[['Close']]
+
+#Preprocessing the data to make it more suitable for the LSTM model
+scaler = MinMaxScaler(feature_range=(0,1))
+scaled_data = scaler.fit_transform(closing_prices)
+
+#Using a 60 day frame for training in order to predict the next day
+days_sequence_len = 60
+X_train, y_train = [], []
+
+for i in range(days_sequence_len, len(scaled_data)):
+    X_train.append(scaled_data[i-days_sequence_len:i, 0])
+    y_train.append(scaled_data[i, 0])
+
+X_train, y_train = np.array(X_train), np.array(y_train)
+X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
