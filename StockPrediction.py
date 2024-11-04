@@ -4,11 +4,11 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 import datetime
 from sklearn.preprocessing import MinMaxScaler
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import LSTM, Dense, Dropout
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout
 
 #Downloading Dataset form yfinance
-ticker = 'APPL'
+ticker = 'AAPL'
 start_date = '2012-01-01'
 end_date = '2024-01-01'
 data = yf.download(ticker, start=start_date, end=end_date)
@@ -50,7 +50,7 @@ history = model.fit(X_train, y_train, epochs=epochs, batch_size=batch_size, verb
 #Prepping Test Data
 
 #Fetching
-test_data = yf.download(ticker, start='2024-01-02', end=datetime.now())
+test_data = yf.download(ticker, start='2024-01-02', end=datetime.datetime.now())
 actual_closing_prices = test_data['Close'].values
 
 #Scaling and setting sequence
@@ -65,3 +65,17 @@ for i in range(days_sequence_len, len(test_inputs)):
 
 X_test = np.array(X_test)
 X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
+
+#Make prediction
+predicted_prices = model.predict(X_test)
+predicted_prices = scaler.inverse_transform(predicted_prices)
+
+#Plot Actual v Predicted
+plt.figure(figsize=(14, 5))
+plt.plot(actual_closing_prices, color="black", label="Actual Price")
+plt.plot(predicted_prices, color="green", label="Predicted Price")
+plt.title(f'{ticker} Stock Price Prediction')
+plt.xlabel('Time')
+plt.ylabel('Stock Price')
+plt.legend()
+plt.show()
