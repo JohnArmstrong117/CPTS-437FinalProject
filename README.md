@@ -2,5 +2,5 @@
 
 ## Stock Market Analysis Using Machine Learning
 
-- To install dependencies, run 'pip install requirements.txt'.
-- To run project, navigate to root directory and run 'python StockPrediction.py'.
+- To install dependencies, run `pip install requirements.txt`.
+- To run project, navigate to root directory and run the command: `python StockPrediction.py`.
