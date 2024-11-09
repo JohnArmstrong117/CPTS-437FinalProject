@@ -7,7 +7,7 @@ Model comparison is a useful tool in evaluating the performance of our LSTM mode
 - SVR
 - Linear Regression
 
-And plot the results of each model vs. the actual data. To see the plot, run the program using the steps outlined in [the readme](../README.md)
+And plot the results of each model vs. the actual data. To see the plot, run the program using the steps outlined in [the readme](../README.md).
 
 ## Metrics
 Common metrics used to test regression models are applied to our model, as well as the comparison models:
