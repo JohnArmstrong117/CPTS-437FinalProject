@@ -26,5 +26,5 @@ sourced from Yahoo Finance, a reliable source of historical stock price informat
 that we use will have a number of features, including opening, high, low, and closing prices. We
 will have this information for a number of different stocks, and have data points for each stock
 on each day between set two dates. This data should be sufficient for creating and training our
-machine-learning algorithm. The dataset can be found [here] (https://finance.yahoo.com/quote/AAPL/).
+machine-learning algorithm. The dataset can be found [here](https://finance.yahoo.com/quote/AAPL/).
 
