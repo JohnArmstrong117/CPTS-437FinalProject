@@ -65,7 +65,7 @@ lstm_model.compile(optimizer='adam', loss='mean_squared_error')
 # Training the LSTM model
 epochs = 50
 batch_size = 32
-lstm_model.fit(X_train, y_train, epochs=epochs, batch_size=batch_size, verbose=1)
+history = lstm_model.fit(X_train, y_train, epochs=epochs, batch_size=batch_size, verbose=1)
 
 # LSTM prediction
 predicted_prices_lstm = lstm_model.predict(X_test)
@@ -143,3 +143,69 @@ table = tabulate(metrics_df, headers='keys', tablefmt='fancy_grid', showindex=Fa
 # Save the formatted table to a txt file with utf-8 encoding
 with open('model_performance_metrics.txt', 'w', encoding='utf-8') as f:
     f.write(table)
+
+# Plot the loss over epochs
+plt.figure(figsize=(8, 5))
+plt.plot(history.history['loss'], label='Training Loss')
+plt.title('LSTM Training Loss Over Epochs')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+# LSTM
+plt.subplot(2, 2, 1)
+plt.plot(actual_closing_prices, color='red', label='Actual Prices')
+plt.plot(predicted_prices_lstm, color='blue', label='Predicted Prices')
+plt.title('LSTM Model')
+plt.xlabel('Time')
+plt.ylabel('Price')
+plt.legend()
+
+# Random Forest
+plt.subplot(2, 2, 2)
+plt.plot(actual_closing_prices, color='red', label='Actual Prices')
+plt.plot(predicted_prices_rf, color='blue', label='Predicted Prices')
+plt.title('Random Forest Model')
+plt.xlabel('Time')
+plt.ylabel('Price')
+plt.legend()
+
+# SVR
+plt.subplot(2, 2, 3)
+plt.plot(actual_closing_prices, color='red', label='Actual Prices')
+plt.plot(predicted_prices_svr, color='blue', label='Predicted Prices')
+plt.title('SVR Model')
+plt.xlabel('Time')
+plt.ylabel('Price')
+plt.legend()
+
+# Linear Regression
+plt.subplot(2, 2, 4)
+plt.plot(actual_closing_prices, color='red', label='Actual Prices')
+plt.plot(predicted_prices_lr, color='blue', label='Predicted Prices')
+plt.title('Linear Regression Model')
+plt.xlabel('Time')
+plt.ylabel('Price')
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+# MSE and R2 Score
+plt.figure(figsize=(10, 5))
+
+plt.subplot(1, 2, 1)
+plt.bar(metrics["Model"], metrics["MSE"], color='orange')
+plt.title('Mean Squared Error (MSE)')
+plt.xlabel('Model')
+plt.ylabel('MSE')
+
+plt.subplot(1, 2, 2)
+plt.bar(metrics["Model"], metrics["R2"], color='green')
+plt.title('R2 Score')
+plt.xlabel('Model')
+plt.ylabel('R2 Score')
+plt.tight_layout()
+plt.show()
