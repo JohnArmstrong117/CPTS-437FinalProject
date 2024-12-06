@@ -4,10 +4,10 @@
 We will be taking the models outlined in the [project overview](/docs/project_overview.md) and comparing them against each other.
 
 Models Used:
-`LSTM`
-`SVR`
-`Random Forest`
-`Linear Regression`
+- `LSTM`
+- `SVR`
+- `Random Forest`
+- `Linear Regression`
 
 The project plots the results of each model vs. the actual data. To see the plot, run the program using the steps outlined in [the readme](../README.md).
 
@@ -22,4 +22,4 @@ The result of these metric calculations are printed in `model_performance_metric
 
 These metrics will allow us to determine which model is the best* out of all of them.
 
-* given the conditions we set 
+*given the conditions we set 
