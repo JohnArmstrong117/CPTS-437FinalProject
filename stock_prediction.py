@@ -3,6 +3,7 @@ import pandas as pd
 import yfinance as yf
 import matplotlib.pyplot as plt
 import datetime
+import argparse
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.svm import SVR
@@ -11,6 +12,18 @@ from sklearn.metrics import mean_squared_error, r2_score
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 from tabulate import tabulate
+
+parser = argparse.ArgumentParser(description="Stock Price Prediction with n_days")
+parser.add_argument(
+    '--days', 
+    type=int, 
+    default=1,
+    help="Number of future days to predict"
+)
+
+args = parser.parse_args()
+
+n = args.days
 
 # Downloading Dataset from yfinance
 ticker = 'AAPL'
@@ -29,16 +42,18 @@ scaled_data = scaler.fit_transform(closing_prices)
 days_sequence_len = 60
 X_train, y_train = [], []
 
-for i in range(days_sequence_len, len(scaled_data)):
+for i in range(days_sequence_len, len(scaled_data) - n):
     X_train.append(scaled_data[i - days_sequence_len:i, 0])
-    y_train.append(scaled_data[i, 0])
+    y_train.append(scaled_data[i + n - 1, 0])  # Target is n days ahead
+X_train, y_train = np.array(X_train), np.array(y_train)
+X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
 
 X_train, y_train = np.array(X_train), np.array(y_train)
 X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
 
 # Split data for testing
 test_data = yf.download(ticker, start='2021-01-01', end=datetime.datetime.now())
-actual_closing_prices = test_data['Close'].values
+actual_closing_prices = test_data['Close'].values[n:]
 
 total_data = pd.concat((data['Close'], test_data['Close']), axis=0)
 test_inputs = total_data[len(total_data) - len(test_data) - days_sequence_len:].values
@@ -46,9 +61,8 @@ test_inputs = test_inputs.reshape(-1, 1)
 test_inputs = scaler.transform(test_inputs)
 
 X_test = []
-for i in range(days_sequence_len, len(test_inputs)):
+for i in range(days_sequence_len, len(test_inputs) - n):
     X_test.append(test_inputs[i - days_sequence_len:i, 0])
-
 X_test = np.array(X_test)
 X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
 
