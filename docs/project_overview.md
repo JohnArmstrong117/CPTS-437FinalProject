@@ -7,17 +7,21 @@ in stock price over time, daily return, moving average, and correlation between 
 can be used to forecast future behavior. A model like this would allow investors to make
 informed decisions about where to put their money based on hard data rather than speculation.
 This will have utility to any investor looking to maximize the potential of their investments.
+We will be comparing and contrasting various models, discussing the accuracy and eventually deciding
+which model fits the data best.
 
-# Model
-The primary model used will be a recurrent neural network(RNN). More specifically we will be
-using the long short-term memory(LSTM) variant. The reason we are using an LSTM is due to
-the timeframe involved with stock data. The current behavior of stock prices are not just
-determined by immediate past data but also by historical trends that must be considered when
-predicting the future of that stock. A traditional RNN suffers from the vanishing gradient problem
-which can cause the neural network to essentially stop learning after a certain point due to the
-model’s weights not being effectively updated when the gradients get too small. The LSTM was
-created specifically as a response to the vanishing gradient problem. It should be sufficient for
-our need to maintain important information about long-term dependencies over many iterations.
+# Models
+## `LSTM` - Long Short Term Memory
+A type of RNN (Recurrent Neural Network) which uses gates to control the flow of information. They are tailored to learn long-term dependencies bewteen time steps in data.
+
+## `Random Forest`
+An ensemble of decision trees commonly used in both regression and classification problems. The output of multiple decision trees are combined to reach a single result.
+
+## `SVR` - Support Vector Regression
+An extension of the popular model SVM (Support Vector Machine) using the same principle (finding the best fit). In `SVR` the best fit is a hyperplane that has the maximum number of points.
+
+## `Linear Regression`
+A model which estimates the linear relationship between a dependent and independent variable(s).
 
 # Data 
 In order to create a machine-learning program with the purpose of predicting changes in stock
